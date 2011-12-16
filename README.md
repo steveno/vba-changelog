@@ -7,23 +7,25 @@ The inspiration and starter code for this code was provided by:
 ## How mine differs
 The code on their page will provide you with a change log recording
 the following fields:
- * CELL CHANGED
- * OLD VALUE
- * NEW VALUE 
- * TIME OF CHANGE
- * DATE OF CHANGE
+
+ *  CELL CHANGED
+ *  OLD VALUE
+ *  NEW VALUE
+ *  TIME OF CHANGE
+ *  DATE OF CHANGE
 
 My code will track the following fields:
+
  * SHEET
  * CELL
  * OLD VALUE
- * NEW VALUE 
- * TIME 
+ * NEW VALUE
+ * TIME
  * DATE
  * USER
 
-The other main difference between the two is my version will also 
-track changes to multiple cells at one time. 
+The other main difference between the two is my version will also
+track changes to multiple cells at one time.
 
 ## Limitations
 There is one fairly major limitation to the code though. If you select a 
