@@ -38,6 +38,9 @@ To use simply place the code in the Private Module of the Workbook (ThisWorkbook
 ## Contributing
 Pull requests are welcome as always.
 
+## License
+This software is licensed under the Apache 2 license.
+
 ## Author(s)
 Steven Oliver
 
