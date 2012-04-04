@@ -17,8 +17,12 @@ Dim vOldValR() As Range
 Dim vOldVal() As String
 
 Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
-    ReDim vOldValR(0 To Target.Cells.Count - 1) As Range
-    ReDim vOldVal(0 To Target.Cells.Count - 1) As String
+    If Target.Cells.Count < UBound(vOldValR) Then
+        ReDim vOldValR(0 To Target.Cells.Count - 1) As Range
+        ReDim vOldVal(0 To Target.Cells.Count - 1) As String
+    Else
+        Exit Sub
+    End If
     
     If Target.Cells.Count > 1 Then
         multi = True
