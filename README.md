@@ -25,7 +25,7 @@ My code will track the following fields:
  * USER
 
 The other main difference between the two is my version will also
-track changes to multiple cells at one time.
+track changes to **multiple cells** at one time.
 
 ## Limitations
 None at this time.
