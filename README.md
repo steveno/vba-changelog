@@ -37,7 +37,7 @@ To use simply place the code in the Private Module of the Workbook (ThisWorkbook
 Pull requests are welcome as always.
 
 ## License
-This software is licensed under the Apache 2 license.
+This software is licensed under the [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0.html).
 
 ## Author(s)
 Steven Oliver
