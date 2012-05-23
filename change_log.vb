@@ -13,15 +13,29 @@
 'limitations under the License.
 
 Public multi As Boolean
+
 Dim vOldValR() As Range
 Dim vOldVal() As String
 
+Private Function check_sheet(sheet As String) As Boolean
+    If sheet = "This Week" Or sheet = "Statistics" Or sheet = "Change Log" Then
+        check_sheet = True
+    Else
+        check_sheet = False
+    End If
+End Function
+
 Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
-    If Target.Cells.Count < UBound(vOldValR) Then
+    If check_sheet(Target.Cells.Worksheet.Name) Then
+        Exit Sub
+    ' Excel forbids you from assigning a whole column
+    ' or row to an array for performance reasons so
+    ' to keep it simple and set a hard limit
+    '
+    ' http://support.microsoft.com/kb/166342
+    ElseIf Target.Cells.Count < 65000 Then
         ReDim vOldValR(0 To Target.Cells.Count - 1) As Range
         ReDim vOldVal(0 To Target.Cells.Count - 1) As String
-    Else
-        Exit Sub
     End If
     
     If Target.Cells.Count > 1 Then
@@ -45,6 +59,10 @@ Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Ra
 End Sub
 
 Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
+    If check_sheet(Target.Cells.Worksheet.Name) Then
+        Exit Sub
+    End If
+
     Dim i As Integer
     
     i = 0
@@ -59,51 +77,59 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
 End Sub
 
 Private Sub Write_Change(ByVal Target As Range, i As Integer)
-Dim bBold As Boolean
+    If check_sheet(Target.Cells.Worksheet.Name) Then
+        Exit Sub
+    End If
+    
+    Dim bBold As Boolean
 
-On Error Resume Next
-    With Application
-         .ScreenUpdating = False
-         .EnableEvents = False
-    End With
+    On Error Resume Next
+        With Application
+            .ScreenUpdating = False
+            .EnableEvents = False
+        End With
 
-    If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then vOldVal(i) = "(null)"
-    bBold = Target.HasFormula
-        With Sheet8
+        If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then vOldVal(i) = "(null)"
+            bBold = Target.HasFormula
+            With Sheet8
                 .Unprotect Password:="newpass"
-                If .Range("A1") = vbNullString Then
+                If .Range("A1:G1") = vbNullString Then
                     .Range("A1:G1") = Array("SHEET", "CELL", "OLD VALUE", _
                         "NEW VALUE", "TIME", "DATE", "USER")
                 End If
-            With .Cells(.Rows.Count, 1).End(xlUp)(2, 1)
-                 .Value = Target.Cells.Worksheet.Name
-                 .Offset(0, 1) = Target.Address
-                 .Offset(0, 2) = vOldVal(i)
-                      With .Offset(0, 3)
+            
+                With .Cells(.Rows.Count, 1).End(xlUp)(2, 1)
+                    .Value = Target.Cells.Worksheet.Name
+                    .Offset(0, 1) = Target.Address
+                    .Offset(0, 2) = vOldVal(i)
+                    With .Offset(0, 3)
                         If bBold = True Then
-                          .ClearComments
-                          .AddComment.Text Text:="Bold values are the result of formulas"
+                            .ClearComments
+                            .AddComment.Text Text:="Bold values are the result of formulas"
                         End If
-                            If Target = "" Or IsNull(Target) Then
-                                .Value = "(null)"
-                            Else
-                                .Value = Target
-                            End If
-                          .Font.Bold = bBold
-                      End With
-                 .Offset(0, 4) = Time
-                 .Offset(0, 5) = Date
-                 .Offset(0, 6) = Environ("USERNAME")
+                            
+                        If Target = "" Or IsNull(Target) Then
+                            .Value = "(null)"
+                        Else
+                            .Value = Target
+                        End If
+                          
+                        .Font.Bold = bBold
+                    End With
+                    
+                    .Offset(0, 4) = Time
+                    .Offset(0, 5) = Date
+                    .Offset(0, 6) = Environ("USERNAME")
+                End With
+                
+                .Cells.Columns.AutoFit
+                .Protect Password:="newpass"
             End With
-            .Cells.Columns.AutoFit
-            .Protect Password:="newpass"
+        
+        vOldVal(i) = vbNullString
+        With Application
+            .ScreenUpdating = True
+            .EnableEvents = True
         End With
-
-    vOldVal(i) = vbNullString
-    With Application
-         .ScreenUpdating = True
-         .EnableEvents = True
-    End With
-On Error GoTo 0
+    On Error GoTo 0
 End Sub
-
