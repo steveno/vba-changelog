@@ -27,11 +27,8 @@ My code will track the following fields:
 The other main difference between the two is my version will also
 track changes to **multiple cells** at one time.
 
-## Limitations
-None at this time.
-
 ## Install
-To use simply place the code in the Private Module of the Workbook (ThisWorkbook).
+See the wiki.
 
 ## Contributing
 Pull requests are welcome as always.
