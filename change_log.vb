@@ -97,21 +97,11 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     
     Dim bBold As Boolean
             
-    If multi = True Then
-        If (vOldVal(i) = "" Or IsNull(vOldVal(i))) Then
-            If Target = "" Or IsNull(Target) Then
-                Exit Sub
-            Else
-                vOldVal(i) = "(null)"
-            End If
-        End If
-    Else
-        If vOldVal(0) = "" Or IsNull(vOldVal(0)) Then
-            If Target = "" Or IsNull(Target) Then
-                Exit Sub
-            Else
-                vOldVal(0) = "(null)"
-            End If
+    If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
+        If Target = "" Or IsNull(Target) Then
+            Exit Sub
+        Else
+            vOldVal(i) = "(null)"
         End If
     End If
               
