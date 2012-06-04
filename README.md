@@ -31,7 +31,7 @@ track changes to **multiple cells** at one time.
 See the wiki.
 
 ## Contributing
-Pull requests are welcome as always.
+Pull requests are welcome as always. See the wiki for details.
 
 ## License
 This software is licensed under the [Apache 2 license](http://www.apache.org/licenses/LICENSE-2.0.html).
