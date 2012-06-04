@@ -96,61 +96,61 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     End If
     
     Dim bBold As Boolean
-
-    On Error Resume Next
-        With Application
-            .ScreenUpdating = False
-            .EnableEvents = False
-        End With
-
-        If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
+            
+    If multi = True Then
+        If (vOldVal(i) = "" Or IsNull(vOldVal(i))) Then
             If Target = "" Or IsNull(Target) Then
                 Exit Sub
             Else
                 vOldVal(i) = "(null)"
             End If
         End If
-        
-        bBold = Target.HasFormula
-        With Sheet8
-            .Unprotect Password:="newpass"
-            If .Range("A1:G1") = vbNullString Then
-                .Range("A1:G1") = Array("SHEET", "CELL", "OLD VALUE", _
-                    "NEW VALUE", "TIME", "DATE", "USER")
+    Else
+        If vOldVal(0) = "" Or IsNull(vOldVal(0)) Then
+            If Target = "" Or IsNull(Target) Then
+                Exit Sub
+            Else
+                vOldVal(0) = "(null)"
             End If
+        End If
+    End If
+              
+    bBold = Target.HasFormula
+    With Sheet8
+        .Unprotect Password:="newpass"
+        If .Range("A1") = vbNullString Then
+            .Range("A1:G1") = Array("SHEET", "CELL", "OLD VALUE", _
+                "NEW VALUE", "TIME", "DATE", "USER")
+        End If
             
-            With .Cells(.Rows.Count, 1).End(xlUp)(2, 1)
-                .Value = Target.Cells.Worksheet.Name
-                .Offset(0, 1) = Target.Address
-                .Offset(0, 2) = vOldVal(i)
-                With .Offset(0, 3)
-                    If bBold = True Then
-                        .ClearComments
-                        AddComment.Text Text:="Bold values are the result of formulas"
-                    End If
-                            
-                    If Target = "" Or IsNull(Target) Then
-                        .Value = "(null)"
-                    Else
-                        .Value = Target
-                    End If
+        With .Cells(.Rows.Count, 1).End(xlUp)(2, 1)
+            .Value = Target.Cells.Worksheet.Name
+            .Offset(0, 1) = Target.Address
+            .Offset(0, 2) = vOldVal(i)
+            With .Offset(0, 3)
+                If bBold = True Then
+                    .ClearComments
+                    AddComment.Text Text:="Bold values are the result of formulas"
+                End If
+                           
+                If Target = "" Or IsNull(Target) Then
+                    .Value = "(null)"
+                Else
+                    .Value = Target
+                End If
                           
-                    .Font.Bold = bBold
-                End With
-                    
-                .Offset(0, 4) = Time
-                .Offset(0, 5) = Date
-                .Offset(0, 6) = Environ("USERNAME")
+                .Font.Bold = bBold
             End With
+                    
+            .Offset(0, 4) = Time
+            .Offset(0, 5) = Date
+            .Offset(0, 6) = Environ("USERNAME")
+        End With
                 
-            .Cells.Columns.AutoFit
-            .Protect Password:="newpass"
-        End With
+        .Cells.Columns.AutoFit
+        .Protect Password:="newpass"
+    End With
         
-        vOldVal(i) = vbNullString
-        With Application
-            .ScreenUpdating = True
-            .EnableEvents = True
-        End With
-    On Error GoTo 0
+    vOldVal(i) = vbNullString
 End Sub
+
