@@ -76,13 +76,11 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
         .ScreenUpdating = False
         .EnableEvents = False
     End With
-    
-    Call Assign_Range_Values(Target)
-    
-    Dim i As Integer
-    
-    i = 0
+        
     If multi Then
+        Dim i As Integer
+        i = 0
+
         For Each lArr In vOldValR()
             Call Write_Change(lArr, i)
             i = i + 1
@@ -90,6 +88,11 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     Else
         Call Write_Change(Target, 0)
     End If
+    
+    With Application
+            .ScreenUpdating = True
+            .EnableEvents = True
+    End With
 End Sub
 
 Private Sub Write_Change(ByVal Target As Range, i As Integer)
