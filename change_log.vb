@@ -49,12 +49,7 @@ Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Ra
         ReDim vOldVal(0 To Target.Cells.Count - 1) As String
     End If
     
-    With Application
-        .ScreenUpdating = False
-        .EnableEvents = False
-    End With
-    
-    If Target.Cells.Count >= 1 Then
+    If Target.Cells.Count > 1 Then
         Call Assign_Range_Values(Target)
     ElseIf IsNull(Target.Text) Then
         multi = False
@@ -63,7 +58,7 @@ Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Ra
     Else
         multi = False
         Set vOldValR(0) = Target
-        vOldVal(i) = Target.Text
+        vOldVal(0) = Target.Text
     End If
 End Sub
 
