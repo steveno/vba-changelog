@@ -8,21 +8,21 @@ The inspiration and starter code for this code was provided by:
 The code on their page will provide you with a change log recording
 the following fields:
 
- *  CELL CHANGED
- *  OLD VALUE
- *  NEW VALUE
- *  TIME OF CHANGE
- *  DATE OF CHANGE
+ *  Cell Changed
+ *  Old Value
+ *  New Value
+ *  Time of Change
+ *  Date of Change
 
 My code will track the following fields:
 
- * SHEET
- * CELL
- * OLD VALUE
- * NEW VALUE
- * TIME
- * DATE
- * USER
+ * Sheet
+ * Cell
+ * Old Value
+ * New Value
+ * Time
+ * Date
+ * User
 
 The other main difference between the two is my version will also
 track changes to **multiple cells** at one time.
