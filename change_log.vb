@@ -90,11 +90,7 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     End With
 End Sub
 
-Private Sub Write_Change(ByVal Target As Range, i As Integer)
-    If check_sheet(Target.Cells.Worksheet.Name) Then
-        Exit Sub
-    End If
-    
+Private Sub Write_Change(ByVal Target As Range, i As Integer)    
     Dim bBold As Boolean
             
     If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
