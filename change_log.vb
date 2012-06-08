@@ -37,14 +37,14 @@ Private Sub Assign_Range_Values(ByVal Target As Range)
 End Sub
 
 Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
-    If check_sheet(Target.Cells.Worksheet.Name) Then
+    If check_sheet(Target.Cells.Worksheet.Name) or  Target.Cells.Count >= 500 Then
         Exit Sub
     ' Excel forbids you from assigning a whole column
     ' or row to an array for performance reasons so
     ' keep it simple and set a hard limit
     '
     ' http://support.microsoft.com/kb/166342
-    ElseIf Target.Cells.Count < 65000 Then
+    ElseIf Target.Cells.Count < 500 Then
         ReDim vOldValR(0 To Target.Cells.Count - 1) As Range
         ReDim vOldVal(0 To Target.Cells.Count - 1) As String
     End If
