@@ -119,7 +119,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
                     AddComment.Text Text:="Bold values are the result of formulas"
                 End If
                            
-                If Target = "" Or IsNull(Target) Then
+                If Target.Text = "" Or IsNull(Target) Then
                     .Value = "(null)"
                 Else
                     .Value = Target
