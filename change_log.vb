@@ -94,7 +94,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     Dim bBold As Boolean
             
     If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
-        If Target = "" Or IsNull(Target) Then
+        If Target.Text = "" Or IsNull(Target) Then
             Exit Sub
         Else
             vOldVal(i) = "(null)"
@@ -122,7 +122,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
                 If Target.Text = "" Or IsNull(Target) Then
                     .Value = "(null)"
                 Else
-                    .Value = Target
+                    .Value = Target.Text
                 End If
                           
                 .Font.Bold = bBold
