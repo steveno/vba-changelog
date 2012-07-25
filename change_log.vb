@@ -37,7 +37,7 @@ Private Sub Assign_Range_Values(ByVal Target As Range)
 End Sub
 
 Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
-    If check_sheet(Target.Cells.Worksheet.Name) or  Target.Cells.Count >= 500 Then
+    If check_sheet(Target.Cells.Worksheet.Name) or  Target.Cells.CountLarge >= 500 Then
         Exit Sub
     ' Excel forbids you from assigning a whole column
     ' or row to an array for performance reasons so
