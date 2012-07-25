@@ -147,10 +147,14 @@ Private Sub update_from_changelog()
                 sos_row = Right(sos_row, Len(sos_row) - InStrRev(sos_row, "$"))
                 sos_sheet = .Cells(c.Row, "A").Text
             
-                If row_exist(sos_sheet, sos_row) Then
-                    Call update_row(sos_sheet, sos_row)
+                If sos_sheet = "Data" Then
+                    ' do nothing
                 Else
-                    Call add_row(sos_sheet, sos_row)
+                    If row_exist(sos_sheet, sos_row) Then
+                        Call update_row(sos_sheet, sos_row)
+                    Else
+                        Call add_row(sos_sheet, sos_row)
+                    End If
                 End If
             End If
         Next
