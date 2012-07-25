@@ -92,6 +92,13 @@ End Sub
 
 Private Sub Write_Change(ByVal Target As Range, i As Integer)    
     Dim bBold As Boolean
+
+    ' Somehow, someway, we make it here without these
+    ' being initialized...
+    If UBound(vOldVal) = -1 Then
+        ReDim vOldValR(0 To 1) As Range
+        ReDim vOldVal(0 To 1) As String
+    End If
             
     If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
         If Target.Text = "" Or IsNull(Target) Then
