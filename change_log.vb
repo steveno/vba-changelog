@@ -1,4 +1,4 @@
-'Copyright 2011, 2012 Steven Oliver <oliver.steven@gmail.com>
+'Copyright 2011-2013 Steven Oliver <oliver.steven@gmail.com>
 '
 'Licensed under the Apache License, Version 2.0 (the "License");
 'you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ Dim vOldValR() As Range
 Dim vOldVal() As String
 
 Private Function check_sheet(sheet As String) As Boolean
-    If sheet = "This Week" Or sheet = "Statistics" Or sheet = "Change Log" Then
+    If sheet = "This Week" Or Left(sheet, 10) = "Statistics" Or sheet = "Change Log" Then
         check_sheet = True
     Else
         check_sheet = False
@@ -37,7 +37,7 @@ Private Sub Assign_Range_Values(ByVal Target As Range)
 End Sub
 
 Private Sub Workbook_SheetSelectionChange(ByVal Sh As Object, ByVal Target As Range)
-    If check_sheet(Target.Cells.Worksheet.Name) or  Target.Cells.CountLarge >= 500 Then
+    If check_sheet(Target.Cells.Worksheet.Name) Or Target.Cells.CountLarge >= 500 Then
         Exit Sub
     ' Excel forbids you from assigning a whole column
     ' or row to an array for performance reasons so
@@ -75,7 +75,7 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     If multi Then
         Dim i As Integer
         i = 0
-
+        
         For Each lArr In vOldValR()
             Call Write_Change(lArr, i)
             i = i + 1
@@ -90,17 +90,30 @@ Private Sub Workbook_SheetChange(ByVal Sh As Object, ByVal Target As Range)
     End With
 End Sub
 
-Private Sub Write_Change(ByVal Target As Range, i As Integer)    
+Private Sub Write_Change(ByVal Target As Range, i As Integer)
     Dim bBold As Boolean
+                    
+    ' If adding a column gets picked up in the log this should
+    ' catch it
+    '
+    ' 15728640 = the height of a column in Excel 2010
+    If Target.Height = 15728640 Then
+        ReDim vOldValR(0 To 1) As Range
+        ReDim vOldVal(0 To 1) As String
+        
+        vOldVal(i) = "(column insertion)"
+    End If
 
-    ' Somehow, someway, we make it here without these
-    ' being initialized...
+    ' I put this here to catch an error condition. It may not be needed
+    ' as I don't remember what I did that triggered it. It perhaps may
+    ' never actually happen at all...
+    ' Leaving it here for now.
     If UBound(vOldVal) = -1 Then
         ReDim vOldValR(0 To 1) As Range
         ReDim vOldVal(0 To 1) As String
     End If
-            
-    If vOldVal(i) = "" Or IsNull(vOldVal(i)) Then
+    
+    If IsNull(vOldVal(i)) Or vOldVal(i) = "" Then
         If Target.Text = "" Or IsNull(Target) Then
             Exit Sub
         Else
@@ -109,7 +122,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     End If
               
     bBold = Target.HasFormula
-    With Sheets("Change Log")
+    With Sheet8 'Change log
         .Unprotect Password:="newpass"
         If .Range("A1") = vbNullString Then
             .Range("A1:G1") = Array("SHEET", "CELL", "OLD VALUE", _
@@ -146,4 +159,3 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
         
     vOldVal(i) = vbNullString
 End Sub
-
