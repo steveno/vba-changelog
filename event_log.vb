@@ -1,4 +1,4 @@
-'Copyright 2011, 2012 Steven Oliver <oliver.steven@gmail.com>
+'Copyright 2011-2013 Steven Oliver <oliver.steven@gmail.com>
 '
 'Licensed under the Apache License, Version 2.0 (the "License");
 'you may not use this file except in compliance with the License.
@@ -142,11 +142,19 @@ Private Sub update_from_changelog()
     With Sheets("Change Log")
         last_row = .UsedRange.Rows.Count
         For Each c In .Range("F2", "F" & last_row).Cells
+            ' If adding a column gets picked up in the log
+            ' this should catch it
+            Dim test As Variant
+            test = Split(.Cells(c.Row, "B").Text, "$")
+            If Replace(test(1), ":", "") = test(2) Then
+                GoTo NextStatement
+            End If
+                
             If CDate(c.Text) >= DateAdd("d", -7, Date) Then
                 sos_row = .Cells(c.Row, "B").Text
                 sos_row = Right(sos_row, Len(sos_row) - InStrRev(sos_row, "$"))
                 sos_sheet = .Cells(c.Row, "A").Text
-            
+                
                 If sos_sheet = "Data" Then
                     ' do nothing
                 Else
@@ -157,6 +165,7 @@ Private Sub update_from_changelog()
                     End If
                 End If
             End If
+NextStatement:
         Next
     End With
     
@@ -200,7 +209,7 @@ Private Sub cleanup()
         Selection.ClearFormats
         
         ' Delete columns I don't care to see
-        Range("G:G,H:H,I:I").Select
+        Range("G:G,H:H,J:J").Select
         Selection.Delete Shift:=xlToLeft
         
         ' The deletion above removes my column
@@ -210,11 +219,7 @@ Private Sub cleanup()
         Range("G1").Select
         ActiveSheet.Paste
         Application.CutCopyMode = False
-        ActiveCell.FormulaR1C1 = "Notes"
-                
-        ' Make every thing pretty
-        Cells.Select
-        Cells.EntireColumn.AutoFit
+        ActiveCell.FormulaR1C1 = "Transport(s)"
         
         ' Sort the SOS list
         Range("A2").Select
@@ -230,6 +235,21 @@ Private Sub cleanup()
             .SortMethod = xlPinYin
             .Apply
         End With
+        
+        ' Filter the table and make the header row pretty
+        Range("A1:H1").Select
+        Columns("A:A").EntireColumn.AutoFit
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorLight2
+            .TintAndShade = 0.599993896298105
+            .PatternTintAndShade = 0
+        End With
+        
+        ' Auto fit all of the cells
+        Cells.Select
+        Cells.EntireColumn.AutoFit
     End With
 End Sub
 
