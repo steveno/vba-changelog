@@ -27,6 +27,7 @@ End Function
 
 Private Sub Assign_Range_Values(ByVal Target As Range)
     multi = True
+    
     Dim i As Integer
     i = 0
     For Each lRange In Target.Cells
@@ -93,15 +94,15 @@ End Sub
 Private Sub Write_Change(ByVal Target As Range, i As Integer)
     Dim bBold As Boolean
                     
-    ' If adding a column gets picked up in the log this should
-    ' catch it
+    ' If adding/deleteing a column gets picked up in the
+    ' log this should catch it
     '
     ' 15728640 = the height of a column in Excel 2010
     If Target.Height = 15728640 Then
         ReDim vOldValR(0 To 1) As Range
         ReDim vOldVal(0 To 1) As String
         
-        vOldVal(i) = "(column insertion)"
+        vOldVal(i) = "(column-based changed)"
     End If
 
     ' I put this here to catch an error condition. It may not be needed
@@ -139,7 +140,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
                     AddComment.Text Text:="Bold values are the result of formulas"
                 End If
                            
-                If Target.Text = "" Or IsNull(Target) Then
+                If Target.Text = "" Or IsNull(Target.Text) Then
                     .Value = "(null)"
                 Else
                     .Value = Target.Text
