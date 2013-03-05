@@ -146,7 +146,7 @@ Private Sub update_from_changelog()
             ' this should catch it
             Dim test As Variant
             test = Split(.Cells(c.Row, "B").Text, "$")
-            If Replace(test(1), ":", "") = test(2) Then
+            If Not IsNumeric(test(2)) Then
                 GoTo NextStatement
             End If
                 
