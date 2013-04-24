@@ -97,12 +97,23 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     ' If adding/deleteing a column gets picked up in the
     ' log this should catch it
     '
-    ' 15728640 = the height of a column in Excel 2010
-    If Target.Height = 15728640 Then
+    ' 1048576 = the max number of rows in a column
+    If Target.Height = 1048576 Then
         ReDim vOldValR(0 To 1) As Range
         ReDim vOldVal(0 To 1) As String
         
         vOldVal(i) = "(column-based changed)"
+    End If
+    
+    ' If adding/deleteing a row gets picked up in the
+    ' log this should catch it
+    '
+    ' 16384 = column XFD
+    If Target.Width = 16384 Then
+        ReDim vOldValR(0 To 1) As Range
+        ReDim vOldVal(0 To 1) As String
+        
+        vOldVal(i) = "(row-based changed)"
     End If
 
     ' I put this here to catch an error condition. It may not be needed
