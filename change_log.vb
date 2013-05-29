@@ -126,7 +126,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     End If
     
     If IsNull(vOldVal(i)) Or vOldVal(i) = "" Then
-        If Target.Text = "" Or IsNull(Target) Then
+        If IsNull(Target) Or Target.Text = "" Then
             Exit Sub
         Else
             vOldVal(i) = "(null)"
