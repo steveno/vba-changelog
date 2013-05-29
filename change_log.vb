@@ -120,7 +120,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     ' as I don't remember what I did that triggered it. It perhaps may
     ' never actually happen at all...
     ' Leaving it here for now.
-    If UBound(vOldVal) = -1 Then
+    If IsNull(vOldVal) Or UBound(vOldVal) = -1 Then
         ReDim vOldValR(0 To 1) As Range
         ReDim vOldVal(0 To 1) As String
     End If
