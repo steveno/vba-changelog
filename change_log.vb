@@ -134,7 +134,7 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
     End If
               
     bBold = Target.HasFormula
-    With Sheet8 'Change log
+    With Sheets("Change Log")
         .Unprotect Password:="newpass"
         If .Range("A1") = vbNullString Then
             .Range("A1:G1") = Array("SHEET", "CELL", "OLD VALUE", _
