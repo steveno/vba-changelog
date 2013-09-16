@@ -115,15 +115,6 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
         
         vOldVal(i) = "(row-based changed)"
     End If
-
-    ' I put this here to catch an error condition. It may not be needed
-    ' as I don't remember what I did that triggered it. It perhaps may
-    ' never actually happen at all...
-    ' Leaving it here for now.
-    If IsNull(vOldVal) Or UBound(vOldVal) = -1 Then
-        ReDim vOldValR(0 To 1) As Range
-        ReDim vOldVal(0 To 1) As String
-    End If
     
     If IsNull(vOldVal(i)) Or vOldVal(i) = "" Then
         If IsNull(Target) Or Target.Text = "" Then
@@ -131,6 +122,14 @@ Private Sub Write_Change(ByVal Target As Range, i As Integer)
         Else
             vOldVal(i) = "(null)"
         End If
+    End If
+    
+    ' I put this here to catch an error condition. I don't
+    ' know how to trigger this event, but I hit it every now
+    ' and then.
+    If IsNull(vOldVal) Or UBound(vOldVal) = -1 Then
+        ReDim vOldValR(0 To 1) As Range
+        ReDim vOldVal(0 To 1) As String
     End If
               
     bBold = Target.HasFormula
